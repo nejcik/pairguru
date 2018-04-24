@@ -14,11 +14,23 @@ class TitleBracketsValidator < ActiveModel::EachValidator
       # if the length of compared array bracket is not fine -> there is not enough brackets! 
       if basic_open_bracket.length != basic_close_bracket.length || square_open_bracket.length != square_close_bracket.length || curly_open_bracket.length != curly_close_bracket.length
         record.errors.add attribute, (options[:message] || "Not enough brackets (opened & not closed or closed without opening)")
+      else 
+        # check if the order is OK
+        order(record, attribute, basic_open_bracket, basic_close_bracket)
+        order(record, attribute, square_open_bracket, square_close_bracket)
+        order(record, attribute, curly_open_bracket, curly_close_bracket)
       end
-      
-      # check if the order is OK
     end
     # has no special char => title is fine
   end
   
+  def order(record, attribute, open_brackets, close_brackets)
+    if !open_brackets.empty?
+      (0...open_brackets.length).each do |i|
+        if open_brackets[i] > close_brackets[i]
+          record.errors.add attribute, (options[:message] || "Wrong order!")
+        end
+      end
+    end
+  end
 end
