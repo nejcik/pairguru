@@ -2,14 +2,15 @@ class CommentsController < ApplicationController
 	before_action :set_comments, only: [:destroy]
   
   def create
-    @comment = current_user.comments.build(comment_params)
-    
+    comment2 = Comment.find_by_user_id(current_user.id)
+    comment1 = current_user.comments.build(comment_params)
     respond_to do |format|
-      if @comment.save
-        format.html { redirect_to movie_path(@comment.movie_id), notice: 'Comment added successfully' }
-      else
-        format.html { redirect_to '/movies'}
-     end
+        @comment = current_user.comments.build(comment_params)
+        if @comment.save
+          format.html { redirect_to movie_path(@comment.movie_id), notice: 'Comment added successfully' }
+        else
+          format.html { redirect_to '/movies', alert: "Users may only write one review per movie."}
+        end         
     end
   end
   

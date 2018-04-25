@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :comment do
     content "MyText"
-    user nil
-    movie nil
+    user_id 1
+    movie_id 1
   end
 end
