@@ -3,3 +3,15 @@
   = @movie.description
 - if user_signed_in?
   %p= link_to 'Email me details about this movie', send_info_movie_path(@movie), class: 'btn btn-sm btn-default'
+  
+  = form_for @comment, html: {role: "form", action: "#"} do |f|
+    .form-group
+      %p Write a Comment:
+      = f.text_field :content, {class: "form-control"}
+    .form-group
+      = f.hidden_field  :movie_id, value: @movie.id
+    .form-group
+      = f.hidden_field  :user_id, value: current_user.id
+    = f.submit "Submit this Comment", class: "btn btn-default"
+%div.card
+  = render partial: 'comments/comments', locals: { f: @movie.comments.all }

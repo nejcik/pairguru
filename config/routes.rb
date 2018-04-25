@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :comments
   devise_for :users
 
   root "home#welcome"
@@ -15,4 +16,5 @@ Rails.application.routes.draw do
       get :export
     end
   end
+
 end
