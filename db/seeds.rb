@@ -82,3 +82,23 @@ if Movie.count < 100
     )
   end
 end
+
+count_movies = 100
+19.times do |i|
+  unless i >= 20
+    i+=1
+    (1...count_movies).each do |j|
+      Comment.create!(
+        content: "My comment #{i} and #{j}",
+        user_id: User.find(i).id,
+        movie_id: Movie.find(j).id,
+        created_at: Time.zone.now
+      )
+    end
+    count_movies = rand(90)+2
+    i+=3
+  end
+end
+
+
+Rails.logger.info "Creating comments..."

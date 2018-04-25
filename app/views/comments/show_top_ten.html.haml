@@ -1,0 +1,16 @@
+.row
+  .col-md-6.col-md-offset-2.col-lg-4.col-lg-offset-4
+    %h1.text-center Top 10 users
+    %h3.text-center who commented last week
+    %table.table.table-striped
+      %thead
+        %tr
+          %th #
+          %th Name
+          %th.text-center Number of comments:
+      %tbody
+        - @top_ten.each_with_index do |top, i|
+          %tr
+            %td= i + 1
+            %td= top[0]
+            %td.text-center= top[1]

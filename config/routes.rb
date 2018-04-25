@@ -16,5 +16,7 @@ Rails.application.routes.draw do
       get :export
     end
   end
+  
+  get '/show_top_ten', to: "comments#show_top_ten"
 
 end

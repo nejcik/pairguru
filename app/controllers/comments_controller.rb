@@ -3,13 +3,12 @@ class CommentsController < ApplicationController
   
   def create
     comment2 = Comment.find_by_user_id(current_user.id)
-    comment1 = current_user.comments.build(comment_params)
     respond_to do |format|
         @comment = current_user.comments.build(comment_params)
         if @comment.save
           format.html { redirect_to movie_path(@comment.movie_id), notice: 'Comment added successfully' }
         else
-          format.html { redirect_to '/movies', alert: "Users may only write one review per movie."}
+          format.html { redirect_to movie_path(comment2.movie_id), alert: "Users may only write one review per movie."}
         end         
     end
   end
@@ -25,6 +24,10 @@ class CommentsController < ApplicationController
       format.html { redirect_to movie_path(@comment.movie_id), notice: 'Your item was successfully destroyed.' }
       # format.json { head :no_content }
     end
+  end
+  
+  def show_top_ten
+    @top_ten = Comment.where("comments.created_at >= ?", 1.week.ago.utc).joins(:user).group("users.name").order("count(comments.id) desc").count("comments.id").take(10)
   end
 
   private
